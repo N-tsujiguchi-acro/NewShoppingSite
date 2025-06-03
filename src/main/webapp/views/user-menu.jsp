@@ -24,8 +24,8 @@
 		</form>
 
 		
-		<form action="delete.jsp" method="post" style="display: inline;" onsubmit="return confirm('本当に削除しますか？') onsubmit="return confirm('本当に削除しますか？');;">
-		    <input type="hidden" name="memberId" value="${memberId}">
+		<form action="delete" method="post" style="display: inline;" onsubmit="return confirm('本当に削除しますか？');">
+		    <input type="hidden" name="id" value="<%= userName.getMEMBER_ID()%>">
 		    <button type="submit">削除</button>
 		</form>
 
