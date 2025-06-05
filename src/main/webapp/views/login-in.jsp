@@ -16,10 +16,10 @@
 
         <form action="login-in" method="POST" class="login-form">
             <label for="id">ID:</label>
-            <input type="text" id="id" name="id" minlength="7" maxlength="10" required>
+            <input type="text" id="id" name="id" minlength="7" maxlength="10" pattern="[A-Za-z0-9]+" required>
 
             <label for="password">PassWord:</label>
-            <input type="password" id="password" name="password" minlength="7" maxlength="32" required>
+            <input type="password" id="password" name="password" minlength="7" maxlength="32" pattern="[A-Za-z0-9]+" required>
 
             <input type="submit" value="ログイン" class="login-button">
         </form>
