@@ -41,7 +41,14 @@ public class LoginIn extends HttpServlet {
 	    if (userInfo != null) {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("userInfo", userInfo);  // ← オブジェクト名に合わせて "userInfo" に変更推奨
-
+	        
+	        if (session.isNew()) {
+	            System.out.println("新しいセッションが作成されました");
+	        } else {
+	            System.out.println("既存のセッションが再利用されました");
+	        }
+	        
+	        
 	        if (userInfo.isAdmin()) {
 	            response.sendRedirect("admin-user-menu.jsp");
 	        } else {

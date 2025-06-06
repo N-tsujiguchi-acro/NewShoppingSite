@@ -1,6 +1,7 @@
 <%@page import="jp.co.aforce.beans.Users"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,15 +9,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
-    // セッションを取得して破棄
-  Users userName =(Users)session.getAttribute("userInfo");
-    if (session != null) {
-        session.invalidate();
-    }
+<form action="LogoutServlet" method="get" onsubmit="return confirmLogout();">
+    <input type="submit" value="ログアウト">
+</form>
 
-    // ログインページにリダイレクト
-    response.sendRedirect("login-in.jsp");
-%>
+<script>
+    function confirmLogout() {
+        return confirm("本当にログアウトしますか？");
+    }
+</script>
 </body>
 </html>

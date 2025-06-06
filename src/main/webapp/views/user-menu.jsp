@@ -31,7 +31,7 @@
 
 		
 		<form action="logout.jsp" method="get" style="display: inline;">
-		    <button type="submit">ログアウト</button>
+		    <button type="submit">ログアウトへ</button>
 		</form>
 
 	

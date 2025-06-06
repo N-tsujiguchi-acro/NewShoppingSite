@@ -53,49 +53,43 @@ public class UsersDAO  extends DAO{
 	}
 	
 	public boolean addUser(Users user) throws Exception {
-		boolean result;
-		Connection con=getConnection();
+	    boolean result;
+	    Connection con = getConnection();
 
-		PreparedStatement st=con.prepareStatement(
-			"SELECT EXISTS (  SELECT  1 FROM USERS WHERE MEMBER_ID = ?  AND PASSWORD = ? AND LAST_NAME = ?  AND FIRST_NAME = ?  AND ADDRESS = ?  AND MAIL_ADDRESS = ? )");
-		
-		st.setString(1, user.getMEMBER_ID());
-		st.setString(2, user.getPASSWORD());
-		st.setString(3, user.getLAST_NAME());
-		st.setString(4, user.getFIRST_NAME());
-		st.setString(5, user.getADDRESS());
-		st.setString(6, user.getMAIL_ADDRESS());
-		
-		ResultSet rs = st.executeQuery();
+	    // MEMBER_ID のみで存在確認
+	    PreparedStatement st = con.prepareStatement(
+	        "SELECT EXISTS (SELECT 1 FROM USERS WHERE MEMBER_ID = ?)");
+	    st.setString(1, user.getMEMBER_ID());
+
+	    ResultSet rs = st.executeQuery();
 	    boolean exists = false;
 	    if (rs.next()) {
 	        exists = rs.getBoolean(1);
 	    }
 	    rs.close();
 	    st.close();
-	    
-		if(exists) {
-			 result = false;
-		}else {
-			PreparedStatement st1=con.prepareStatement(
-					"INSERT INTO USERS (MEMBER_ID, PASSWORD, LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS) VALUES (?, ?, ?, ?, ?, ?)");
-			st1.setString(1, user.getMEMBER_ID());
-			st1.setString(2, user.getPASSWORD());
-			st1.setString(3, user.getLAST_NAME());
-			st1.setString(4, user.getFIRST_NAME());
-			st1.setString(5, user.getADDRESS());
-			st1.setString(6, user.getMAIL_ADDRESS());
-			
-			 st1.executeUpdate();
-			
-			 result = true;
-		}
-		
-	
-		con.close();
-		st.close();
 
-		 return result;
+	    if (exists) {
+	        result = false; // 既に存在するので登録しない
+	    } else {
+	        // INSERT 実行
+	        PreparedStatement st1 = con.prepareStatement(
+	            "INSERT INTO USERS (MEMBER_ID, PASSWORD, LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS) VALUES (?, ?, ?, ?, ?, ?)");
+	        st1.setString(1, user.getMEMBER_ID());
+	        st1.setString(2, user.getPASSWORD());
+	        st1.setString(3, user.getLAST_NAME());
+	        st1.setString(4, user.getFIRST_NAME());
+	        st1.setString(5, user.getADDRESS());
+	        st1.setString(6, user.getMAIL_ADDRESS());
+
+	        st1.executeUpdate();
+	        st1.close();
+
+	        result = true;
+	    }
+
+	    con.close();
+	    return result;
 	}
 	
 	public Users update(Users user) throws Exception {
