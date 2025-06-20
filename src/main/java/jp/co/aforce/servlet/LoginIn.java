@@ -2,6 +2,7 @@ package jp.co.aforce.servlet;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,8 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.Product;
 import jp.co.aforce.beans.Users;
 import jp.co.aforce.dao.UsersDAO;
+import jp.co.aforce.dao.productDAO;
 
 /**
  * Servlet implementation class Login_In
@@ -42,17 +45,37 @@ public class LoginIn extends HttpServlet {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("userInfo", userInfo);  // ← オブジェクト名に合わせて "userInfo" に変更推奨
 	        
-	        if (session.isNew()) {
-	            System.out.println("新しいセッションが作成されました");
-	        } else {
-	            System.out.println("既存のセッションが再利用されました");
-	        }
-	        
-	        
+	       
 	        if (userInfo.isAdmin()) {
-	            response.sendRedirect("admin-user-menu.jsp");
+	        	try {
+					UsersDAO dao = new UsersDAO();
+					 
+					List<Users> list = dao.findAll();
+					
+					session.setAttribute("alluser", list);
+					response.sendRedirect("admin-user-menu.jsp");
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
 	        } else {
-	            response.sendRedirect("user-menu.jsp");
+	        	try {
+					productDAO dao = new productDAO();
+					 
+					List<Product> list = dao.findAll();
+					
+					session.setAttribute("allproduct", list);
+					response.sendRedirect("user-menu.jsp");
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
 	        }
 
 	    } else {

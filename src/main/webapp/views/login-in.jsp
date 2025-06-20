@@ -9,7 +9,7 @@
 
     
 </head>
-<body>
+<body style="padding :0">
     <div class="container">
         <h1 class="title">📚 Book to Book</h1>
         <p class="subtitle">ようこそ！こちらはログインページです！</p>

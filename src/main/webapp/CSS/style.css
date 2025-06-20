@@ -1,10 +1,20 @@
 @charset "UTF-8";
+html{
+	background-color: rgb(196, 64, 0);
+}
 body {
     font-family: "Segoe UI", sans-serif;
-    background-color: #f2f4f8;
-    margin: 0;
+    background-color: rgb(255, 255, 255);
+    margin: 0 auto;
     padding: 0;
+	width: 90%;
+	
 }
+.main h2{
+	text-align: center;
+}
+
+
 
 .container {
     width: 400px;
@@ -13,6 +23,7 @@ body {
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+	
 }
 
 .title {
@@ -47,7 +58,7 @@ body {
 }
 
 .login-button {
-    background-color: #007BFF;
+    background-color: rgb(200, 0, 0);
     color: #fff;
     padding: 10px;
     border: none;
@@ -57,8 +68,305 @@ body {
 }
 
 .login-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(196, 64, 0);
 }
+
+.button {
+  display: flex;
+  justify-content: flex-end; /* 右寄せ */
+  gap: 10px; /* ボタン同士の間隔 */
+  margin: 20px;
+}
+
+.button button {
+  background-color: #e53935; /* 鮮やかな赤 */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.button button:hover {
+  background-color: #c62828; /* ホバー時に濃い赤 */
+}
+
+
+
+
+.slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* 最大幅 */
+    height: 500px;
+    margin: 0 auto;
+    list-style: none;
+    padding: 0;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgb(255, 255, 255);
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.main_content img {
+    max-height: 80%;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.slide h2 {
+	color: rgb(255, 128, 128);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* ───────────  全体レイアウト  ─────────── */
+.main_content {
+  display: flex;
+  flex-wrap: wrap;          /* 狭い画面では縦並び */
+  justify-content: center;
+  gap: 24px;                /* カラム間余白 */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+/* ───────────  左側：検索＋結果  ─────────── */
+.manga_product {
+  flex: 1 1 520px;          /* 最小幅 520px／余裕があれば拡張 */
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 80vh;         /* 結果が多くても縦に伸びすぎない */
+  overflow-y: auto;         /* 多い場合はスクロール */
+}
+
+/* 検索フォーム */
+.manga_product form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.manga_product input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.manga_product input[type="submit"] {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #ff6b6b;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.manga_product input[type="submit"]:hover { opacity: .85; }
+
+/* ─ 検索結果テーブル ─ */
+.manga_product table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manga_product th,
+.manga_product td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: left;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+/* 画像セルを固定幅にして整列 */
+.manga_product td:nth-child(3) {
+  width: 140px;             /* 画像幅に合わせる */
+}
+
+/* 商品画像 */
+.manga_product img {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* 「商品を検索してください。」メッセージ中央寄せ */
+.manga_product p {
+  margin: 0 auto;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* ───────────  右側：スライドショー  ─────────── */
+.contents {
+  flex: 1 1 360px;          /* 最小幅 360px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* タイトル */
+.contents h2 {
+  font-size: 1.3rem;
+  margin: 0;
+  text-align: center;
+}
+
+/* スライドショー UL 基本 */
+.slideshow {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 各スライド */
+.slide {
+  display: none;            /* JavaScript で .active を付与して表示 */
+  text-align: center;
+  animation: fade 1s ease-in-out;
+}
+
+.slide.active { display: block; }
+
+.slide h2 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.slide img {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* フェード用アニメーション */
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ───────────  レスポンシブ微調整  ─────────── */
+@media (max-width: 640px) {
+  .manga_product { max-height: none; } /* モバイルは全体表示 */
+  .manga_product td:nth-child(3) { width: 100px; }
+  .manga_product img { width: 100px; height: 140px; }
+  .contents { flex: 1 1 100%; }       /* 下に回り込み */
+}
+/* ───────────  商品一覧のCSS  ─────────── */
+
+.main_content2 {
+  display: flex;
+  flex-wrap: wrap;         /* 複数行に折り返し可能 */
+  gap: 20px;               /* 商品同士の間隔 */
+  justify-content: flex-start;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.main_content2 h2 {
+  width: 100%;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.main_content2 .product-card {
+  width: 200px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  object-fit: contain;   /* 縦横比を保ちつつ領域に収める */
+  margin-bottom: 10px;
+}
+
+.product-card p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.product-card form {
+  margin-top: 10px;
+}
+
+/* ────────── 価格ソートフォーム ────────── */
+#sortForm {
+  display: flex;              /* ラベルとセレクトを横並び */
+  align-items: center;
+  gap: 8px;                   /* ラベルとセレクトの間隔 */
+  margin-bottom: 16px;        /* 既存インライン style と同じ値なので移動可 */
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  width: max-content;         /* 中身に合わせる */
+}
+
+#sortForm label {
+  font-size: 14px;
+  color: #333;
+}
+
+#sortForm select {
+  font-size: 14px;
+  padding: 6px 10px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+#sortForm select:hover,
+#sortForm select:focus {
+  border-color: #1976d2;      /* フォーカス時に少し強調 */
+  outline: none;
+}
+
+
+
 
 /*ここからregister画面*/
 
@@ -75,7 +383,7 @@ body {
 }
 
 .register-link a {
-    color: #007BFF;
+    color: rgb(255, 128, 128);
     text-decoration: none;
 }
 
@@ -105,7 +413,7 @@ body {
 }
 
 .register-submit-button {
-    background-color: rgb(0, 128, 255);
+    background-color: rgb(255, 128, 128);
     color: white;
     padding: 10px 20px;
     font-weight: bold;
@@ -116,14 +424,14 @@ body {
 }
 
 .register-submit-button:hover {
-    background-color: rgb(0, 128, 192);
+    background-color: rgb(255, 128, 128);
 }
 
 .back-to-login {
     display: block;
     text-align: center;
     margin-top: 15px;
-    color: #007BFF;
+    color: rgb(255, 128, 128);
     text-decoration: none;
     font-size: 14px;
 }
@@ -142,4 +450,5 @@ body {
 .user-update{
 	text-align: center;
 }
+
 
