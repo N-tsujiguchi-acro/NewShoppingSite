@@ -78,6 +78,8 @@ public class PurchaseProduct extends HttpServlet {
             purDao.checkout(memberId, cart.getCart_id(), items, cartTotal);
 
             /* ---------- 6. 完了画面へ ---------- */
+            request.getSession().setAttribute("purchaseItems", items);
+
             request.setAttribute("cartTotal", cartTotal);
             request.getRequestDispatcher("purchase-done.jsp").forward(request, response);
 

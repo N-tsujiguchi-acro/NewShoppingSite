@@ -90,7 +90,7 @@
 					<td colspan="2" style="text-align: center;"><input
 						type="hidden" id="cartTotalHidden" name="cart_total"
 						value="<%=cartTotal%>">
-						<button type="submit">購入する</button></td>
+						<button type="submit" onclick="return confirm('本当に購入しますか？');">購入する</button></td>
 				</tr>
 			</table>
 		</form>

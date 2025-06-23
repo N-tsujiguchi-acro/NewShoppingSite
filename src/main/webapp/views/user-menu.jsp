@@ -35,7 +35,7 @@
 		</form>
 
 		
-		<form action="logout.jsp" method="get" style="display: inline;">
+		<form action="LogoutServlet" method="get" onsubmit="return confirmLogout();" style="display: inline;">
 		    <button type="submit">ログアウトへ</button>
 		</form>
 
@@ -184,6 +184,12 @@
 
     // 5秒ごとに次のスライドへ
     setInterval(nextSlide, 5000);
+
+ 
+    function confirmLogout() {
+        return confirm("本当にログアウトしますか？");
+    }
+
 </script>
 </body>
 </html>

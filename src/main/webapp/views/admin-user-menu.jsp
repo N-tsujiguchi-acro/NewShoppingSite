@@ -15,7 +15,12 @@
 <body>
 	<p>こんにちは！<%=userName.getFullName() %>さん。こちらは管理者専用画面です</p>
 	
+	
 	<div>
+		<form action="LogoutServlet" method="get" onsubmit="return confirmLogout();">
+		    <input type="submit" value="ログアウト">
+		</form>
+
 		<form action="AllProduct" method="post">
 		
 			<p><input type="submit"  value="商品登録へ"></p>
@@ -25,7 +30,10 @@
 			<p><input type="button" name="all" value="請求一覧へ"></p>
 		</div>
 		<div>
-			<p><input type="button" name="all" value="コメント確認へ"></p>
+			<form method="post" action="AComment">
+				<p><input type="submit"  value="コメント確認へ"></p>
+			</form>
+			
 		</div>
 	</div>
 	
@@ -70,5 +78,10 @@
 	%>	
 	
 </table>
+<script>
+    function confirmLogout() {
+        return confirm("本当にログアウトしますか？");
+    }
+</script>
 </body>
 </html>

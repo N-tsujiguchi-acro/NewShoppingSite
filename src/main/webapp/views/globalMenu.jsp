@@ -12,7 +12,7 @@
     <ul style="list-style: none; display: flex; gap: 20px; margin: 0; padding: 0;">
         <li><a href="user-menu.jsp" style="text-decoration: none; color: white;">メイン画面</a></li>
         <li><form method="post" action="ShowCart"><input  type="submit" value="cartへ"></form></li>
-        <li><a href="contact.jsp" style="text-decoration: none; color: white;">お問い合わせ</a></li>
+        <li><a href="comment.jsp" style="text-decoration: none; color: white;">お問い合わせ</a></li>
        
     </ul>
 </nav>
