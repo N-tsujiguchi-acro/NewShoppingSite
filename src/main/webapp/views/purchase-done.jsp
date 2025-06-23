@@ -82,7 +82,7 @@
                     <td><%= item.getAmount() %></td>
                     <td>¥<%= item.getPrice() * item.getAmount() %></td>
                     <td>
-                        <img src="<%= request.getContextPath() %>/uploads/<%= item.getImg() %>" 
+                        <img src="<%= request.getContextPath() %>/img/<%= item.getImg() %>" 
                              alt="商品画像" width="120" height="160"/>
                     </td>
                 </tr>

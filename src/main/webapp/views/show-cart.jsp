@@ -62,7 +62,7 @@
 						円</td>
 
 					<td><img
-						src="<%=request.getContextPath()%>/uploads/<%=item.getImg()%>"
+						src="<%=request.getContextPath()%>/img/<%=item.getImg()%>"
 						width="120" height="160"></td>
 
 					<!-- 削除ボタン用フォームは行の外側に置く（入れ子しない） -->

@@ -27,7 +27,9 @@
 		
 		</form>
 		<div>
-			<p><input type="button" name="all" value="請求一覧へ"></p>
+			<form method="post" action="AInvoice">
+				<p><input type="submit"  value="請求一覧へ"></p>
+			</form>
 		</div>
 		<div>
 			<form method="post" action="AComment">

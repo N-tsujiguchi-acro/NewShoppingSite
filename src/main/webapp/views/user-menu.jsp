@@ -64,7 +64,7 @@
 			        <td><%= p.getName() %></td>
 			        <td><%= p.getPrice() %>円</td>
 			        <td>
-					    <img src="<%= request.getContextPath() %>/uploads/<%= p.getImg() %>" alt="商品画像" width="120" height="160"/>
+					    <img src="<%= request.getContextPath() %>/img/<%= p.getImg() %>" alt="商品画像" width="120" height="160"/>
 				  	</td>
 			      </tr>
 			       
@@ -144,7 +144,7 @@
 	      <p><%= p1.getName() %></p>
 	      <p><%= p1.getPrice() %> 円</p>
 	      <p>
-	        <img src="<%= request.getContextPath() %>/uploads/<%= p1.getImg() %>" 
+	        <img src="<%= request.getContextPath() %>/img/<%= p1.getImg() %>" 
 	             alt="商品画像" />
 	      </p>
 	
