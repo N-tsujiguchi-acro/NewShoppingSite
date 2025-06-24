@@ -3,6 +3,7 @@ package jp.co.aforce.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,5 +131,44 @@ public class InvoiceDAO extends DAO {
 
 		    return invoice;
 	}
+	
+	public List<Invoices> findMonthlySummaryByBillingPeriod(LocalDate billingPeriod) throws Exception {
+	    List<Invoices> list = new ArrayList<>();
+	    Connection con = getConnection();
+
+	    String sql = """
+	        SELECT p.member_id,
+	               u.last_name,
+	               u.first_name,
+	               u.address,
+	               SUM(p.purchase_amount) AS total
+	        FROM purchase p
+	        JOIN users u ON p.member_id = u.member_id
+	        WHERE p.billing_period = ?
+	        GROUP BY p.member_id, u.last_name, u.first_name, u.address
+	        ORDER BY p.member_id
+	    """;
+
+	    PreparedStatement st = con.prepareStatement(sql);
+	    st.setDate(1, java.sql.Date.valueOf(billingPeriod));
+	    ResultSet rs = st.executeQuery();
+
+	    while (rs.next()) {
+	        Invoices invoice = new Invoices();  // 汎用的に使用
+	        invoice.setMember_id(rs.getString("member_id"));
+	        invoice.setLast_name(rs.getString("last_name"));
+	        invoice.setFirst_name(rs.getString("first_name"));
+	        invoice.setAddress(rs.getString("address"));
+	        invoice.setTotal(rs.getInt("total"));
+	        list.add(invoice);
+	    }
+
+	    rs.close();
+	    st.close();
+	    con.close();
+
+	    return list;
+	}
+
 
 }

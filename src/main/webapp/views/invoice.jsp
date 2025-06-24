@@ -54,41 +54,59 @@
     }
 %>
 
-<%
-    String updatedId = (String) session.getAttribute("updatedId");
-    List<Invoices> allList = (List<Invoices>) session.getAttribute("allinvoices");
-
-    if (allList != null) {
-        for (Invoices i : allList) {
-%>
-    <div class="invoice-card">
-        <p><strong>会員ID：</strong><%= i.getMember_id() %></p>
-        <p><strong>名前：</strong><%= i.getLast_name() %> <%= i.getFirst_name() %></p>
-        <p><strong>住所：</strong><%= i.getAddress() %></p>
-        <p><strong>合計：</strong><%= i.getTotal() %> 円</p>
-        <% if (i.getMember_id().equals(updatedId)) { %>
-            <p class="success-message">ステータスを更新しました！</p>
+<!-- 月選択フォーム -->
+<form action="MonthFilter" method="get" class="search-form">
+    <label>月選択：</label>
+    <select name="month" class="select-box">
+        <%
+            java.time.Month currentMonth = java.time.LocalDate.now().getMonth();
+            for (int m = 1; m <= 12; m++) {
+        %>
+        <option value="<%= m %>" <%= (m == currentMonth.getValue()) ? "selected" : "" %>>
+            <%= m %>月
+        </option>
         <% } %>
-        <form action="InvoiceUpdate" method="post" class="inline-form"
-              onsubmit="return confirm('本当にこのユーザーのステータスを更新しますか？');">
-            <input type="hidden" name="id" value="<%= i.getMember_id() %>">
-            <select name="status" class="select-box">
-                <option value="未請求"   <%= "未請求".equals(i.getStatus())   ? "selected" : "" %>>未請求</option>
-                <option value="請求済み" <%= "請求済み".equals(i.getStatus()) ? "selected" : "" %>>請求済み</option>
-                <option value="未払い"   <%= "未払い".equals(i.getStatus())   ? "selected" : "" %>>未払い</option>
-            </select>
-            <input type="submit" value="更新" class="btn edit-btn">
-        </form>
-    </div>
-<%
-        }
-    }
-%>
+    </select>
+    <input type="submit" value="月で絞り込む" class="btn menu-btn">
+</form>
 
-<%-- フラッシュメッセージ消去 --%>
+<hr>
+
 <%
-session.removeAttribute("updatedId");
-session.removeAttribute("flashMsg");
+    List<Invoices> allList = (List<Invoices>) session.getAttribute("allinvoices");
+    String nodataMsg = (String) session.getAttribute("nodataMsg");
+
+    if (nodataMsg != null) {
+%>
+    <p class="no-result"><%= nodataMsg %></p>
+<%
+    } else if (allList != null && !allList.isEmpty()) {
+%>
+    <h3 class="section-title">会員別 月次請求合計</h3>
+    <table class="user-table">
+        <tr>
+            <th>会員ID</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>住所</th>
+            <th>合計金額</th>
+        </tr>
+        <%
+            for (Invoices i : allList) {
+        %>
+        <tr>
+            <td><%= i.getMember_id() %></td>
+            <td><%= i.getLast_name() %></td>
+            <td><%= i.getFirst_name() %></td>
+            <td><%= i.getAddress() %></td>
+            <td><%= i.getTotal() %> 円</td>
+        </tr>
+        <% } %>
+    </table>
+<%
+    }
+    session.removeAttribute("allinvoices");
+    session.removeAttribute("nodataMsg");
 %>
 
 </body>
