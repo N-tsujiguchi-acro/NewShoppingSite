@@ -451,4 +451,14 @@ body {
 	text-align: center;
 }
 
+.form-input {
+  width: 300px;              /* 入力欄の横幅 */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
 

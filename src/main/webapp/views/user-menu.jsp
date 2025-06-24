@@ -55,7 +55,7 @@
 			    List<Product> productList = (List<Product>) request.getAttribute("productList");
 			    if (productList == null) {
 			%>
-			    <p style="text-align:center;">商品を検索してください。</p>
+			    <p style="text-align:center;">商品名で検索してください。</p>
 			<%
 			    } else {
 			     for (Product p : productList) {

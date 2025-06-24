@@ -82,5 +82,53 @@ public class InvoiceDAO extends DAO {
 	        return affectedRows > 0;     // 1 行以上なら成功とみなす
 	    }
 	}
+	
+	
+	public Invoices search(String id) throws Exception {
+		 Invoices invoice = null;
+
+		    Connection con = getConnection();  // DB接続
+
+		    String sql = """
+		        SELECT 
+		            i.member_id,
+		            i.purchase_id,
+		            i.total,
+		            i.status,
+		            u.last_name,
+		            u.first_name,
+		            u.address
+		        FROM 
+		            invoices i
+		        INNER JOIN 
+		            users u
+		        ON 
+		            i.member_id = u.member_id
+		        WHERE 
+		            i.member_id = ?
+		        LIMIT 1
+		    """;
+
+		    PreparedStatement ps = con.prepareStatement(sql);
+		    ps.setString(1, id);
+		    ResultSet rs = ps.executeQuery();
+
+		    if (rs.next()) {
+		        invoice = new Invoices();
+		        invoice.setMember_id(rs.getString("member_id"));
+		        invoice.setPurchase_id(rs.getInt("purchase_id"));
+		        invoice.setTotal(rs.getInt("total"));
+		        invoice.setStatus(rs.getString("status"));
+		        invoice.setLast_name(rs.getString("last_name"));
+		        invoice.setFirst_name(rs.getString("first_name"));
+		        invoice.setAddress(rs.getString("address"));
+		    }
+
+		    rs.close();
+		    ps.close();
+		    con.close();
+
+		    return invoice;
+	}
 
 }
