@@ -461,4 +461,34 @@ body {
   margin-bottom: 10px;
 }
 
+.register-complete-container {
+    max-width: 480px;
+    margin: 100px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .register-complete-container p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .register-complete-container a {
+    display: inline-block;
+    background-color: rgb(255, 128, 128);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+
+  .register-complete-container a:hover {
+    background-color: rgb(255, 70, 70);
+  }
 
