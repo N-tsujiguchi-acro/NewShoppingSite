@@ -23,11 +23,16 @@ Users userName =(Users)session.getAttribute("userInfo");
 
 <div class="container">
 	<form action="user-update2.jsp" method="post">
-	  <input type="hidden" name="id" value="<%=userName.getMEMBER_ID()%>"><br> 
-	  <input type="text" name="last_name" value="<%=userName.getLAST_NAME()%>" required><br>
-	  <input type="text" name="first_name" value="<%=userName.getFIRST_NAME() %>" required><br>
-	  <input type="text" name="address" value="<%=userName.getADDRESS() %>" required><br>
-	  <input type="email" name="mail_address" value="<%=userName.getMAIL_ADDRESS() %>"  required>
+	    <input type="hidden" name="id" value="<%=userName.getMEMBER_ID()%>"><br> 
+
+		<input type="text" name="last_name" value="<%=userName.getLAST_NAME()%>" required class="form-input"><br>
+		
+		<input type="text" name="first_name" value="<%=userName.getFIRST_NAME() %>" required class="form-input"><br>
+		
+		<input type="text" name="address" value="<%=userName.getADDRESS() %>" required class="form-input"><br>
+		
+		<input type="email" name="mail_address" value="<%=userName.getMAIL_ADDRESS() %>" required class="form-input"><br>
+
 	  <input type="submit" value="確認" class="register-submit-button">
 	</form>
 </div>

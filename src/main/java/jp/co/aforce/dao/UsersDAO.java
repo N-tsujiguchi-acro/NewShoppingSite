@@ -16,7 +16,7 @@ public class UsersDAO  extends DAO{
 	        Connection con = getConnection();
 
 	        PreparedStatement st = con.prepareStatement(
-	            "SELECT MEMBER_ID, PASSWORD ,CONCAT(LAST_NAME, ' ', FIRST_NAME) AS full_name, is_admin, LAST_NAME,FIRST_NAME,ADDRESS,MAIL_ADDRESS FROM USERS WHERE MEMBER_ID = ? AND PASSWORD = ?"
+	            "SELECT MEMBER_ID, PASSWORD ,CONCAT(LAST_NAME, ' ', FIRST_NAME) AS full_name, is_admin, LAST_NAME,FIRST_NAME,ADDRESS,MAIL_ADDRESS FROM users WHERE MEMBER_ID = ? AND PASSWORD = ?"
 	        );
 	        st.setString(1, id);
 	        st.setString(2, pass);
@@ -58,7 +58,7 @@ public class UsersDAO  extends DAO{
 
 	    // MEMBER_ID のみで存在確認
 	    PreparedStatement st = con.prepareStatement(
-	        "SELECT EXISTS (SELECT 1 FROM USERS WHERE MEMBER_ID = ?)");
+	        "SELECT EXISTS (SELECT 1 FROM users WHERE MEMBER_ID = ?)");
 	    st.setString(1, user.getMEMBER_ID());
 
 	    ResultSet rs = st.executeQuery();
@@ -74,7 +74,7 @@ public class UsersDAO  extends DAO{
 	    } else {
 	        // INSERT 実行
 	        PreparedStatement st1 = con.prepareStatement(
-	            "INSERT INTO USERS (MEMBER_ID, PASSWORD, LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS) VALUES (?, ?, ?, ?, ?, ?)");
+	            "INSERT INTO users (MEMBER_ID, PASSWORD, LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS) VALUES (?, ?, ?, ?, ?, ?)");
 	        st1.setString(1, user.getMEMBER_ID());
 	        st1.setString(2, user.getPASSWORD());
 	        st1.setString(3, user.getLAST_NAME());
@@ -96,7 +96,7 @@ public class UsersDAO  extends DAO{
 	    Connection con = getConnection();
 
 	    PreparedStatement st = con.prepareStatement(
-	        "update USERS set LAST_NAME = ?, FIRST_NAME = ? , ADDRESS = ? , MAIL_ADDRESS = ?  where MEMBER_ID = ?"
+	        "update users set LAST_NAME = ?, FIRST_NAME = ? , ADDRESS = ? , MAIL_ADDRESS = ?  where MEMBER_ID = ?"
 	    );
 	    st.setString(1, user.getLAST_NAME());
 	    st.setString(2, user.getFIRST_NAME());
@@ -111,7 +111,7 @@ public class UsersDAO  extends DAO{
 	    if (rowsUpdated > 0) {
 	        // 更新成功した場合、ユーザー情報を再取得
 	        PreparedStatement selectSt = con.prepareStatement(
-	            "SELECT MEMBER_ID, PASSWORD, CONCAT(LAST_NAME, ' ', FIRST_NAME) AS full_name, is_admin, LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS FROM USERS WHERE MEMBER_ID = ? "
+	            "SELECT MEMBER_ID, PASSWORD, CONCAT(LAST_NAME, ' ', FIRST_NAME) AS full_name, is_admin, LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS FROM users WHERE MEMBER_ID = ? "
 	        );
 	        selectSt.setString(1, user.getMEMBER_ID());
 	        
@@ -144,7 +144,7 @@ public class UsersDAO  extends DAO{
 	    Connection con = getConnection();
 
 	    PreparedStatement st = con.prepareStatement(
-	        "delete from USERS where MEMBER_ID = ?"
+	        "delete from users where MEMBER_ID = ?"
 	    );
 	    st.setString(1, id);
 
@@ -155,13 +155,13 @@ public class UsersDAO  extends DAO{
 	    return rowsDeleted > 0;
 	}
 
-	public List<Users> findAll(String all)throws Exception {
+	public List<Users> findAll()throws Exception {
 		List<Users> list=new ArrayList<>();
 		
 		Connection con=getConnection();
 
 		PreparedStatement st=con.prepareStatement(
-			"select * from USERS"
+			"select * from users"
 		);
 		ResultSet rs = st.executeQuery();
 
@@ -181,6 +181,29 @@ public class UsersDAO  extends DAO{
 		return list;
 		
 		
+	}
+	
+	/*商品の一部検索（修正画面に必須）*/
+	public Users findUsers(String id) throws Exception {
+	    Users u = null;
+
+	    try (Connection con = getConnection();
+	         PreparedStatement st = con.prepareStatement(
+	             "SELECT MEMBER_ID,LAST_NAME, FIRST_NAME, ADDRESS, MAIL_ADDRESS FROM users WHERE MEMBER_ID = ?")) {
+
+	        st.setString(1, id);
+	        ResultSet rs = st.executeQuery();
+
+	        if (rs.next()) {
+	            u = new Users();  
+	            u.setMEMBER_ID(rs.getString("MEMBER_ID"));// ★ここを忘れずに
+	            u.setLAST_NAME(rs.getString("LAST_NAME"));
+	            u.setFIRST_NAME(rs.getString("FIRST_NAME"));
+	            u.setADDRESS(rs.getString("ADDRESS"));
+	            u.setMAIL_ADDRESS(rs.getString("MAIL_ADDRESS"));
+	        }
+	    }
+	    return u;      // 見つからなければ null
 	}
 	
 	

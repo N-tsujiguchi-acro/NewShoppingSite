@@ -1,0 +1,241 @@
+@charset "UTF-8";
+
+/* 全体レイアウト */
+.admin-body {
+    font-family: "Helvetica", "Arial", sans-serif;
+    background-color: #f9f9f9;
+    margin: 20px;
+    color: #333;
+}
+
+/* 挨拶メッセージ */
+.greeting {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* メニューボタンの囲み */
+.admin-menu {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* ボタン共通スタイル */
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 各ボタンの色分け */
+.logout-btn {
+    background-color: #666;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.menu-btn {
+    background-color: #337ab7;
+    color: white;
+    margin-right: 10px;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #5cb85c;
+    color: white;
+}
+
+/* ボタン hover */
+.btn:hover {
+    opacity: 0.85;
+}
+
+/* ユーザー一覧テーブル */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+}
+
+.user-table th,
+.user-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.user-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* テーブル行にホバー時の効果 */
+.user-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* 戻るリンク */
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #337ab7;
+    text-decoration: none;
+    font-weight: bold;
+}
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* 見出し */
+.section-title {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* フォーム全体 */
+.search-form,
+.product-form {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* テキスト入力 */
+.text-input {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* セレクトボックス */
+.select-box {
+    padding: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* 商品カード表示 */
+.product-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 6px;
+    max-width: 300px;
+}
+
+/* メッセージ表示 */
+.no-result {
+    color: #888;
+    font-style: italic;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.success-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
+/* コメントカード */
+.comment-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    max-width: 600px;
+}
+
+.comment-member,
+.comment-text,
+.comment-time,
+.comment-email {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.comment-text {
+    white-space: pre-wrap;
+}
+
+/* 「コメントはありません」 */
+.no-result {
+    color: #777;
+    font-style: italic;
+    margin-top: 20px;
+}
+/* 請求カード */
+.invoice-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 6px;
+    max-width: 600px;
+}
+
+/* フォーム横並び対応 */
+.inline-form {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* ステータスメッセージ */
+.success-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 5px;
+}
+/* 入力フォームコンテナ */
+.form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+/* ラベルと入力欄 */
+.product-form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.product-form .text-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* セクションタイトル */
+.section-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
