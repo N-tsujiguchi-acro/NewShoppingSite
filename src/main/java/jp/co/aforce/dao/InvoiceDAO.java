@@ -169,6 +169,48 @@ public class InvoiceDAO extends DAO {
 
 	    return list;
 	}
+	
+	public List<Invoices> findMonthlyInvoiceWithStatus(LocalDate billingPeriod) throws Exception {
+	    List<Invoices> list = new ArrayList<>();
+	    Connection con = getConnection();
+
+	    String sql = """
+	        SELECT p.member_id,
+	               u.last_name,
+	               u.first_name,
+	               u.address,
+	               SUM(p.purchase_amount) AS total,
+	               i.status
+	        FROM purchase p
+	        JOIN users u ON p.member_id = u.member_id
+	        JOIN invoices i ON p.member_id = i.member_id
+	        WHERE p.billing_period = ?
+	        GROUP BY p.member_id, u.last_name, u.first_name, u.address, i.status
+	        ORDER BY p.member_id
+	    """;
+
+	    PreparedStatement st = con.prepareStatement(sql);
+	    st.setDate(1, java.sql.Date.valueOf(billingPeriod));
+	    ResultSet rs = st.executeQuery();
+
+	    while (rs.next()) {
+	        Invoices invoice = new Invoices();
+	        invoice.setMember_id(rs.getString("member_id"));
+	        invoice.setLast_name(rs.getString("last_name"));
+	        invoice.setFirst_name(rs.getString("first_name"));
+	        invoice.setAddress(rs.getString("address"));
+	        invoice.setTotal(rs.getInt("total"));
+	        invoice.setStatus(rs.getString("status"));
+	        list.add(invoice);
+	    }
+
+	    rs.close();
+	    st.close();
+	    con.close();
+
+	    return list;
+	}
+
 
 
 }

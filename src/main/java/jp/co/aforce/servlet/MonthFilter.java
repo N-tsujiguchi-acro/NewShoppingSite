@@ -35,6 +35,8 @@ public class MonthFilter extends HttpServlet {
 
 	            HttpSession session = request.getSession();
 	            session.setAttribute("allinvoices", invoices);
+	            session.setAttribute("currentMonth", month); // 表示中の月を保存
+
 
 	            if (invoices == null || invoices.isEmpty()) {
 	                session.setAttribute("nodataMsg", "該当月のデータは入っていません。");

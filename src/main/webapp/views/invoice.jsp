@@ -1,7 +1,6 @@
 <%@page import="jp.co.aforce.beans.Invoices"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,19 +21,12 @@
 
 <%
     Invoices invoice = (Invoices) request.getAttribute("InvoiceUser");
-
     if (invoice != null) {
 %>
     <h3 class="section-title">検索結果</h3>
     <table class="user-table">
         <tr>
-            <th>会員ID</th>
-            <th>姓</th>
-            <th>名</th>
-            <th>住所</th>
-            <th>購入ID</th>
-            <th>合計金額</th>
-            <th>ステータス</th>
+            <th>会員ID</th><th>姓</th><th>名</th><th>住所</th><th>購入ID</th><th>合計金額</th><th>ステータス</th>
         </tr>
         <tr>
             <td><%= invoice.getMember_id() %></td>
@@ -49,7 +41,7 @@
 <%
     } else {
 %>
-    <p class="no-result"></p>
+    <p class="no-result">検索結果がありません。</p>
 <%
     }
 %>
@@ -75,6 +67,8 @@
 <%
     List<Invoices> allList = (List<Invoices>) session.getAttribute("allinvoices");
     String nodataMsg = (String) session.getAttribute("nodataMsg");
+    String updatedId = (String) session.getAttribute("updatedId");
+    String flashMsg  = (String) session.getAttribute("flashMsg");
 
     if (nodataMsg != null) {
 %>
@@ -82,31 +76,50 @@
 <%
     } else if (allList != null && !allList.isEmpty()) {
 %>
-    <h3 class="section-title">会員別 月次請求合計</h3>
+    <h3 class="section-title">会員別 月次請求合計 ＋ ステータス</h3>
     <table class="user-table">
         <tr>
-            <th>会員ID</th>
-            <th>姓</th>
-            <th>名</th>
-            <th>住所</th>
-            <th>合計金額</th>
+            <th>会員ID</th><th>姓</th><th>名</th><th>住所</th><th>合計金額</th><th>ステータス</th><th>操作</th>
         </tr>
         <%
             for (Invoices i : allList) {
         %>
         <tr>
-            <td><%= i.getMember_id() %></td>
-            <td><%= i.getLast_name() %></td>
-            <td><%= i.getFirst_name() %></td>
-            <td><%= i.getAddress() %></td>
-            <td><%= i.getTotal() %> 円</td>
+            <form action="InvoiceUpdate" method="post"
+                  onsubmit="return confirm('本当にステータスを変更しますか？');">
+                <td><%= i.getMember_id() %></td>
+                <td><%= i.getLast_name() %></td>
+                <td><%= i.getFirst_name() %></td>
+                <td><%= i.getAddress() %></td>
+                <td><%= i.getTotal() %> 円</td>
+                <td>
+                    <select name="status">
+                        <option value="未請求"   <%= "未請求".equals(i.getStatus()) ? "selected" : "" %>>未請求</option>
+                        <option value="請求済み" <%= "請求済み".equals(i.getStatus()) ? "selected" : "" %>>請求済み</option>
+                        <option value="未払い"   <%= "未払い".equals(i.getStatus()) ? "selected" : "" %>>未払い</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="hidden" name="id" value="<%= i.getMember_id() %>">
+                    <input type="submit" value="更新">
+                </td>
+            </form>
         </tr>
         <% } %>
     </table>
 <%
     }
+
+    if (flashMsg != null) {
+%>
+    <p class="success-message"><%= flashMsg %></p>
+<%
+    }
+
     session.removeAttribute("allinvoices");
     session.removeAttribute("nodataMsg");
+    session.removeAttribute("updatedId");
+    session.removeAttribute("flashMsg");
 %>
 
 </body>
