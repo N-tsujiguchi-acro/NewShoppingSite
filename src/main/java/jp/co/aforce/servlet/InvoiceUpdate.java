@@ -24,10 +24,16 @@ public class InvoiceUpdate extends HttpServlet {
 
         String status = request.getParameter("status");
         String id     = request.getParameter("id");
+        int purchaseId  = Integer.parseInt(request.getParameter("purchase_id"));
+        
+        System.out.println("memberId: " + id);
+        System.out.println("purchaseId: " + purchaseId);
+        System.out.println("status: " + status);
+
 
         try {
             InvoiceDAO dao = new InvoiceDAO();
-            boolean success = dao.updateStatus(id, status);
+            dao.updateStatus(id, purchaseId, status);
 
             HttpSession session = request.getSession();
             session.setAttribute("updatedId", id);

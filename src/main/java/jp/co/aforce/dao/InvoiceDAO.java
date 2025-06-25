@@ -18,18 +18,18 @@ public class InvoiceDAO extends DAO {
 
 	    Connection con = getConnection();
 
-	    // ▼ users と結合し、ネームと住所ぼ情報 も取得
 	    String sql = """
-	    	    SELECT i.member_id,
-	    	           u.address,
-	    	           u.last_name,
-	    	           u.first_name,
-	    	           i.total,
-	    	           i.status
-	    	    FROM   invoices i
-	    	    JOIN   users u ON i.member_id = u.member_id
-	    	""";
-
+	        SELECT 
+	            i.member_id,
+	            i.purchase_id,                       -- ★ 追加
+	            u.address,
+	            u.last_name,
+	            u.first_name,
+	            i.total,
+	            i.status
+	        FROM invoices i
+	        JOIN users u ON i.member_id = u.member_id
+	    """;
 
 	    PreparedStatement st = con.prepareStatement(sql);
 	    ResultSet rs = st.executeQuery();
@@ -37,7 +37,8 @@ public class InvoiceDAO extends DAO {
 	    while (rs.next()) {
 	        Invoices i = new Invoices();
 	        i.setMember_id(rs.getString("member_id"));
-	        i.setAddress(rs.getString("address"));   // ★ 追加
+	        i.setPurchase_id(rs.getInt("purchase_id"));     // ★ 追加
+	        i.setAddress(rs.getString("address"));
 	        i.setLast_name(rs.getString("last_name"));
 	        i.setFirst_name(rs.getString("first_name"));
 	        i.setTotal(rs.getInt("total"));
@@ -49,6 +50,7 @@ public class InvoiceDAO extends DAO {
 
 	    return list;
 	}
+
 	
 	/**
 	 * invoices テーブルの status を更新する。
@@ -61,29 +63,27 @@ public class InvoiceDAO extends DAO {
 	 * @throws IllegalArgumentException 渡されたステータスが不正
 	 */
 	
-	public boolean updateStatus(String memberId, String newStatus) throws Exception {
-
-	    // ―― CHECK 1: ステータス値のバリデーション ―――――――――――――――――――――――――――――――
+	public boolean updateStatus(String memberId, int purchaseId, String newStatus) throws Exception {
 	    if (!newStatus.equals("未請求") &&
 	        !newStatus.equals("請求済み") &&
 	        !newStatus.equals("未払い")) {
 	        throw new IllegalArgumentException("不正なステータス値: " + newStatus);
 	    }
 
-	    // ―― UPDATE 文（status と member_id だけ） ―――――――――――――――――――――――――――
-	    final String sql = "UPDATE invoices SET status = ? WHERE member_id = ?";
+	    final String sql = "UPDATE invoices SET status = ? WHERE member_id = ? AND purchase_id = ?";
 
 	    try (Connection con = getConnection();
 	         PreparedStatement st = con.prepareStatement(sql)) {
 
-	        st.setString(1, newStatus);  // ① status = ?
-	        st.setString(2, memberId);   // ② WHERE member_id = ?
+	        st.setString(1, newStatus);
+	        st.setString(2, memberId);
+	        st.setInt(3, purchaseId);
 
 	        int affectedRows = st.executeUpdate();
-	        return affectedRows > 0;     // 1 行以上なら成功とみなす
+	        return affectedRows > 0;
 	    }
 	}
-	
+
 	
 	public Invoices search(String id) throws Exception {
 		 Invoices invoice = null;
@@ -137,16 +137,18 @@ public class InvoiceDAO extends DAO {
 	    Connection con = getConnection();
 
 	    String sql = """
-	        SELECT p.member_id,
-	               u.last_name,
-	               u.first_name,
-	               u.address,
-	               SUM(p.purchase_amount) AS total
+	        SELECT 
+	            p.member_id,
+	            p.purchase_id,                             -- ★ 追加
+	            u.last_name,
+	            u.first_name,
+	            u.address,
+	            SUM(p.purchase_amount) AS total
 	        FROM purchase p
 	        JOIN users u ON p.member_id = u.member_id
 	        WHERE p.billing_period = ?
-	        GROUP BY p.member_id, u.last_name, u.first_name, u.address
-	        ORDER BY p.member_id
+	        GROUP BY p.member_id, p.purchase_id, u.last_name, u.first_name, u.address
+	        ORDER BY p.member_id, p.purchase_id
 	    """;
 
 	    PreparedStatement st = con.prepareStatement(sql);
@@ -154,8 +156,9 @@ public class InvoiceDAO extends DAO {
 	    ResultSet rs = st.executeQuery();
 
 	    while (rs.next()) {
-	        Invoices invoice = new Invoices();  // 汎用的に使用
+	        Invoices invoice = new Invoices();
 	        invoice.setMember_id(rs.getString("member_id"));
+	        invoice.setPurchase_id(rs.getInt("purchase_id"));  // ★ 追加
 	        invoice.setLast_name(rs.getString("last_name"));
 	        invoice.setFirst_name(rs.getString("first_name"));
 	        invoice.setAddress(rs.getString("address"));
@@ -169,24 +172,27 @@ public class InvoiceDAO extends DAO {
 
 	    return list;
 	}
+
 	
 	public List<Invoices> findMonthlyInvoiceWithStatus(LocalDate billingPeriod) throws Exception {
 	    List<Invoices> list = new ArrayList<>();
 	    Connection con = getConnection();
 
 	    String sql = """
-	        SELECT p.member_id,
-	               u.last_name,
-	               u.first_name,
-	               u.address,
-	               SUM(p.purchase_amount) AS total,
-	               i.status
+	        SELECT 
+	            p.member_id,
+	            u.last_name,
+	            u.first_name,
+	            u.address,
+	            p.purchase_id,
+	            SUM(p.purchase_amount) AS total,
+	            i.status
 	        FROM purchase p
 	        JOIN users u ON p.member_id = u.member_id
-	        JOIN invoices i ON p.member_id = i.member_id
+	        JOIN invoices i ON p.member_id = i.member_id AND p.purchase_id = i.purchase_id
 	        WHERE p.billing_period = ?
-	        GROUP BY p.member_id, u.last_name, u.first_name, u.address, i.status
-	        ORDER BY p.member_id
+	        GROUP BY p.member_id, p.purchase_id, u.last_name, u.first_name, u.address, i.status
+	        ORDER BY p.member_id, p.purchase_id
 	    """;
 
 	    PreparedStatement st = con.prepareStatement(sql);
@@ -199,6 +205,7 @@ public class InvoiceDAO extends DAO {
 	        invoice.setLast_name(rs.getString("last_name"));
 	        invoice.setFirst_name(rs.getString("first_name"));
 	        invoice.setAddress(rs.getString("address"));
+	        invoice.setPurchase_id(rs.getInt("purchase_id"));  // ← 追加！！
 	        invoice.setTotal(rs.getInt("total"));
 	        invoice.setStatus(rs.getString("status"));
 	        list.add(invoice);
@@ -210,6 +217,7 @@ public class InvoiceDAO extends DAO {
 
 	    return list;
 	}
+
 
 
 

@@ -100,6 +100,7 @@
                     </select>
                 </td>
                 <td>
+                	<input type="hidden" name="purchase_id" value="<%= i.getPurchase_id() %>">
                     <input type="hidden" name="id" value="<%= i.getMember_id() %>">
                     <input type="submit" value="更新">
                 </td>
