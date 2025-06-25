@@ -1,6 +1,7 @@
 package jp.co.aforce.servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -18,29 +19,37 @@ import jp.co.aforce.dao.InvoiceDAO;
  */
 @WebServlet("/views/InvoiceUpdate")
 public class InvoiceUpdate extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
- 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			String status = request.getParameter("status");
-			String   id    = request.getParameter("id");
-			InvoiceDAO dao = new InvoiceDAO();
-			boolean success = dao.updateStatus(id,status);
-			
-			if(success){
-				List<Invoices> list = dao.findAll();
-				
-				HttpSession session = request.getSession();
-				session.setAttribute("allinvoices", list);
-				session.setAttribute("flashMsg", "ステータスを更新しました！");
-				session.setAttribute("updatedId", id);   // ← 行内で表示したい場合はIDも渡す
-				response.sendRedirect("invoice.jsp");
-			}
-		} catch (Exception e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
 
+        String status = request.getParameter("status");
+        String id     = request.getParameter("id");
+
+        try {
+            InvoiceDAO dao = new InvoiceDAO();
+            boolean success = dao.updateStatus(id, status);
+
+            HttpSession session = request.getSession();
+            session.setAttribute("updatedId", id);
+            session.setAttribute("flashMsg", "ステータスを更新しました！");
+
+            // ✅ 表示中の月を取得（なければ今月にする）
+            Integer month = (Integer) session.getAttribute("currentMonth");
+            if (month == null) {
+                month = java.time.LocalDate.now().getMonthValue();
+            }
+            int year = java.time.LocalDate.now().getYear(); // 今の年（必要ならセッションで保持）
+
+            LocalDate billingPeriod = LocalDate.of(year, month, 1);
+            List<Invoices> filteredList = dao.findMonthlyInvoiceWithStatus(billingPeriod);
+
+            session.setAttribute("allinvoices", filteredList);
+
+            response.sendRedirect("invoice.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("invoice.jsp");
+        }
+    }
 }

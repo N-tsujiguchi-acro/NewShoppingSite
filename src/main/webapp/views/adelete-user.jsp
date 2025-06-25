@@ -5,22 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>削除完了画面</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/admin-style.css">
 </head>
 <body>
+<a href="admin-user-menu.jsp" class="back-link">会員一覧メニューへ戻る</a>
 <%
     String error = (String) request.getAttribute("error");
     if (error != null) {
 %>
-    <%@ include file="globalMenu.jsp" %>
+ 
     <p style="color: red;"><%= error %></p>
-<%
-    } else {
-%>
 
-	<P>お客様の情報を削除しました。</P>
-	<p>もう一度やり直したい場合は、ログイン画面から新規登録を行ってください</p>
-	<a href="login-in.jsp" class="back-to-login">ログイン画面へ</a>
-    
 <%
     }
 %>
